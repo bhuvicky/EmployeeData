@@ -14,7 +14,9 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
     var employeeListLiveData: MutableLiveData<List<EmployeeRecord>> = MutableLiveData()
 
     init {
-        val employeeDao = EmployeeDatabase.invoke(application).employeeDao()
+//        val employeeDao = EmployeeDatabase.invoke(application).employeeDao()
+        // invoke is an operator func, we can call that function without using its name. // Kotlin Operator Overloading.
+        val employeeDao = EmployeeDatabase(application).employeeDao()
         repository = EmployeeRepository(employeeDao)
         employeeListLiveData.value = repository.getAllRecords()
     }

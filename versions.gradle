@@ -16,7 +16,7 @@ versions.lifecycle = '2.1.0'
 versions.dagger = '2.25.2'
 
 // Reactive
-versions.rxjava = '2.2.15'
+versions.rxjava = '2.3.0'
 versions.rxandroid = '2.1.1'
 versions.rxbinding = '3.1.0'
 
@@ -49,7 +49,7 @@ lifecycle.compiler = "androidx.lifecycle:lifecycle-common-java8:$versions.lifecy
 deps.lifecycle = lifecycle
 
 def reactive = [:]
-reactive.rxjava = "io.reactivex.rxjava2:rxjava:$versions.rxjava"
+reactive.rxjava = "io.reactivex.rxjava2:rxkotlin:$versions.rxjava"
 reactive.rxandroid = "io.reactivex.rxjava2:rxandroid:$versions.rxandroid"
 deps.reactive = reactive
 

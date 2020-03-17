@@ -1,9 +1,8 @@
-package example.com.employeedata
+package com.example.employeedata
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.employeedata.base.BaseActivity
-import com.example.employeedata.ui.EmployeeListFragment
+import com.example.employeedata.ui.EmployeeDetailsFragment
 
 class MainActivity : BaseActivity() {
 
@@ -11,6 +10,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        replace(R.id.fragment_container, EmployeeListFragment.newInstance())
+        replace(R.id.fragment_container, EmployeeDetailsFragment.newInstance())
     }
+
 }

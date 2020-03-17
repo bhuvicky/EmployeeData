@@ -13,6 +13,7 @@ abstract class EmployeeDatabase : RoomDatabase() {
         private var instance: EmployeeDatabase? = null
         private val LOCK = Any()
 
+        // Double checked locking for singleton
         operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
             instance ?: buildDatabase(context).also { instance = it }
         }
