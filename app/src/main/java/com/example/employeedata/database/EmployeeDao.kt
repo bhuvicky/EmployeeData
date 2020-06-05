@@ -7,15 +7,18 @@ import androidx.room.*
 interface EmployeeDao {
 
     //  You can also make your queries observable using LiveData
+    // All observable queries by default run on worker thread, by Room
     @Query("SELECT * FROM students_table")
-    fun getAll(): List<EmployeeRecord>
+    fun getAll(): LiveData<List<EmployeeRecord>>
 
-    @Insert
-    fun insertAll(vararg todo: EmployeeRecord)
+    // A method, annotated with @Insert can return a long. This is the newly generated ID for the inserted row
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(employee: EmployeeRecord) : Long
+
+    // A method, annotated with @Update can return an int. This is the number of updated rows.
+    @Update
+    fun update(employee: EmployeeRecord) : Int
 
     @Delete
-    fun delete(todo: EmployeeRecord)
-
-    @Update
-    fun update(vararg todos: EmployeeRecord)
+    fun delete(employee: EmployeeRecord)
 }

@@ -2,6 +2,7 @@ package com.example.employeedata.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.employeedata.database.EmployeeRecord
 
 object AppPreferences {
 
@@ -47,6 +48,7 @@ object AppPreferences {
     * In order to make them accessible from anywhere outside the enclosing class, that class has to be brought "into scope".
     * The with function is very useful here:
     * */
+    // Extension property must have accessors or to be abstract
     var SharedPreferences.myDob : Long
         get() = getLong(KEY_DOB, 0)
         set(value) {

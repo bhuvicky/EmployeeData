@@ -5,12 +5,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "students_table")
 data class EmployeeRecord(
+    // to make primary key as auto-increment.
     @PrimaryKey(autoGenerate = true)
-    val employeeId: Int,
+    val employeeId: Long,
 
     val name: String,
     val age: Int,
     val dob: Long,
-    val gender: String,
+    val gender: Int,
     val mobileNo: String
 )

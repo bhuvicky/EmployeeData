@@ -8,14 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProviders
+import com.example.employeedata.AppUtil
+import com.example.employeedata.EmployeeApp
 import com.example.employeedata.R
 import com.example.employeedata.base.BaseFragment
 import com.example.employeedata.data.AppPreferences
+import com.example.employeedata.data.EmployeeViewModel
+import com.example.employeedata.database.EmployeeRecord
+import com.example.employeedata.extensions.getViewModel
 import com.jakewharton.rxbinding3.widget.itemSelections
 import com.jakewharton.rxbinding3.widget.textChanges
+import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.Flowables
 import io.reactivex.rxkotlin.Observables
 import kotlinx.android.synthetic.main.fragment_employee_details.*
+import kotlinx.android.synthetic.main.item_employee.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,18 +34,30 @@ class EmployeeDetailsFragment : BaseFragment() {
 
     private lateinit var isValid: Observable<Boolean>
     private lateinit var pref: SharedPreferences
+    private lateinit var mViewModel: EmployeeViewModel
+    private var mEmployeeRecord: EmployeeRecord? = null
+    private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
+    private var isFormChanged = false
 
     companion object {
-        fun newInstance() = EmployeeDetailsFragment()
+        fun newInstance(employeeRecord: EmployeeRecord? = null) = EmployeeDetailsFragment().apply {
+            mEmployeeRecord = employeeRecord
+        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_employee_details, container, false)
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // TODO Doubt: for generic method "getViewModel", we are not mentioned the Type parameter.. how it is working ??
+        mViewModel = getViewModel { EmployeeViewModel(EmployeeApp.getAppContext()) }
 
         // if we use kotlin-android-extensions for "findviewbyid"
         // we can't access UI element id in "onCreateView" method.
@@ -43,9 +65,15 @@ class EmployeeDetailsFragment : BaseFragment() {
         setObservers()
         pref = AppPreferences.getInstance(context!!)
 
+        mEmployeeRecord?.let {
+            setTitle("Update Employee")
+            setUIData(it)
+            buttonSave.text = "Update"
+        } ?: setTitle("Create New Employee")
     }
 
     private fun setObservers() {
+        var count = 0;
         /*
         * When we subscribe to this (edittext) observable an empty data is thrown which would be considered invalid and the error would pop up.
         * But we don’t want this behavior so skip(1) would do exactly that and skip the first emission.
@@ -55,26 +83,47 @@ class EmployeeDetailsFragment : BaseFragment() {
         val dobObservable = editTextDob.textChanges().skipInitialValue()
         val genderObservable = spinnerGender.itemSelections()
 
-        val formDisposable = Observables.combineLatest(nameObservable, ageObservable, dobObservable, genderObservable) { name, age, dob, gender ->
+        // TODO: if we use "combineLatest" from Flowable class, we will get "BackPressureSupport" by default.
+        // TODO: Error Faced: "combineLatest" is not useful to update / edit form
+        val formDisposable = Observables.combineLatest(
+            nameObservable,
+            ageObservable,
+            dobObservable,
+            genderObservable
+        ) { name, age, dob, gender ->
             // Once last input field (edittext) starts typing.. comrbineLatest gets trigger...
             // it's not considering the spinner part..
             println("log name = $name")
             println("log age = $age")
             println("log dob = $dob")
             println("log gender = $gender")
+            if (++count > 1)
+                isFormChanged = true
             isValidForm(name.toString(), age.toString(), dob.toString(), gender)
         }.subscribe {
             buttonSave.isEnabled = it
         }
 
+//        compositeDisposable.addAll(nameObservable, ageObservable, dobObservable, genderObservable, formDisposable)
+        mViewModel.insertOperationLiveData.observe(this, androidx.lifecycle.Observer {
+            println("log inserted row id = $it")
+        })
+
+        mViewModel.updateOperationLiveData.observe(this, androidx.lifecycle.Observer {
+            println("log updated rows count = $it")
+        })
+
+        compositeDisposable.add(formDisposable)
     }
 
     private fun setListeners() {
         val cal = Calendar.getInstance()
         // create an OnDateSetListener
         val dateSetListener = object : DatePickerDialog.OnDateSetListener {
-            override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
-                                   dayOfMonth: Int) {
+            override fun onDateSet(
+                view: DatePicker, year: Int, monthOfYear: Int,
+                dayOfMonth: Int
+            ) {
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -83,33 +132,48 @@ class EmployeeDetailsFragment : BaseFragment() {
                 with(AppPreferences) {
                     pref.myDob = cal.timeInMillis
                 }
-                updateDateInView(cal)
+                editTextDob.setText(AppUtil.convertTimeStampToString(cal.timeInMillis), TextView.BufferType.EDITABLE)
             }
         }
 //      Add android:focusable="false" in Edittext to allow for a single touch.
         // if we don't add above line, after two touch only date-picker dialog will come..
         editTextDob.setOnClickListener {
-            val dialog = DatePickerDialog(context!!, dateSetListener,
+            val dialog = DatePickerDialog(
+                context!!, dateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH))
+                cal.get(Calendar.DAY_OF_MONTH)
+            )
             dialog.datePicker.maxDate = System.currentTimeMillis()
             dialog.show()
         }
 
         buttonSave.setOnClickListener {
-
+            val employeeRecord = EmployeeRecord(
+                employeeId = mEmployeeRecord?.let { it.employeeId } ?: Math.random().toLong(),
+                name = editTextName.text.toString(),
+                age = editTextAge.text.toString().toInt(),
+                dob = with(AppPreferences) { pref.myDob },
+                gender = spinnerGender.selectedItemPosition,
+                mobileNo = ""
+            )
+            mEmployeeRecord?.let {
+                if (isFormChanged)
+                    mViewModel.update(employeeRecord)
+            } ?: mViewModel.insert(employeeRecord)
         }
-
-
     }
 
-    private fun updateDateInView(cal: Calendar) {
-        val myFormat = "MM/dd/yyyy" // mention the format you need
-        val sdf = SimpleDateFormat(myFormat, Locale.US)
-        editTextDob.setText(sdf.format(cal.getTime()), TextView.BufferType.EDITABLE)
+    private fun setUIData(employeeRecord: EmployeeRecord) {
+        with(employeeRecord) {
+            editTextName.setText(this.name, TextView.BufferType.EDITABLE)
+            editTextAge.setText(this.age.toString(), TextView.BufferType.EDITABLE)
+            editTextDob.setText(AppUtil.convertTimeStampToString(this.dob), TextView.BufferType.EDITABLE)
+            spinnerGender.setSelection(this.gender)
+        }
     }
+
 
     private fun isValidForm(name: String, age: String, dob: String, gender: Int): Boolean {
         val validName = !name.isEmpty()
@@ -131,4 +195,8 @@ class EmployeeDetailsFragment : BaseFragment() {
         return validName && validAge && validDob && validGender
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
 }

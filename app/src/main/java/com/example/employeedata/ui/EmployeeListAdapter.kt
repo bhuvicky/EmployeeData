@@ -5,17 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.employeedata.AppUtil
 import com.example.employeedata.R
 import com.example.employeedata.database.EmployeeRecord
-import example.com.employeedata.R
+import kotlinx.android.synthetic.main.item_employee.view.*
 
 class EmployeeListAdapter(private val context: Context,
-                          private val movieList: MutableList<EmployeeRecord> = mutableListOf()):
+                          private val employeeList: MutableList<EmployeeRecord> = mutableListOf(),
+                          private val clickListener: (Int, EmployeeRecord) -> Unit):
     RecyclerView.Adapter<EmployeeListAdapter.EmployeeViewHolder>() {
 
-
-    public fun setData(movie: EmployeeRecord?) {
-
+    init {
+        if (!employeeList.isEmpty())
+            notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): EmployeeViewHolder {
@@ -23,22 +25,31 @@ class EmployeeListAdapter(private val context: Context,
     }
 
     override fun onBindViewHolder(holder: EmployeeViewHolder, position: Int) {
-        val item = movieList?.get(position)
-
-        /*holder.movieTitle.text = item?.title
-        holder.movieOverview.text = item?.overview
-        holder.movieRating.text = "${item?.voteAverage}"
-        holder.movieReleaseDate.text = item?.releaseDate
-        holder.movieLang.text = item?.originalLanguage
-
-        holder.rootView.setOnClickListener {
-            presenter?.onMovieItemClicked(movieList?.get(holder.adapterPosition)!!)
-        }*/
+        val item = employeeList.get(position)
+        holder.bind(item, clickListener)
     }
 
     override fun getItemCount(): Int {
-        return movieList?.size ?: 0
+        return employeeList?.size ?: 0
     }
 
-    class EmployeeViewHolder(val containerView: View?): RecyclerView.ViewHolder(containerView!!)
+    class EmployeeViewHolder(val containerView: View?): RecyclerView.ViewHolder(containerView!!) {
+
+        fun bind(item: EmployeeRecord, clickListener: (Int, EmployeeRecord) -> Unit) {
+            itemView.run {
+                textviewName.text = item.name
+                textviewDob.text = AppUtil.convertTimeStampToString(item.dob)
+                textviewGender.text = when {
+                    item.gender == 1 -> "Male"
+                    item.gender == 2 -> "Female"
+                    else -> ""
+                }
+                textviewAge.text = item.age.toString()
+
+                imageviewEdit.setOnClickListener { clickListener(R.id.imageviewEdit, item) }
+                imageviewDelete.setOnClickListener { clickListener(R.id.imageviewDelete, item) }
+            }
+
+        }
+    }
 }

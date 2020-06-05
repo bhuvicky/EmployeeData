@@ -8,7 +8,7 @@ versions.constraintlayout = '1.1.3'
 versions.multidex = '2.0.1'
 
 // JetPack
-versions.room = '2.2.4'
+versions.room = '2.2.5'
 versions.lifecycle = '2.1.0'
 
 
@@ -44,8 +44,10 @@ db.room_compiler = "androidx.room:room-compiler:$versions.room"
 deps.db = db
 
 def lifecycle = [:]
+// Extensions = ViewModel + LiveData
 lifecycle.extension = "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
 lifecycle.compiler = "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
+lifecycle.reactive_streams = "androidx.lifecycle:lifecycle-reactivestreams:$versions.lifecycle"
 deps.lifecycle = lifecycle
 
 def reactive = [:]

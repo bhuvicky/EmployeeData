@@ -7,10 +7,11 @@ open class BaseActivity: AppCompatActivity() {
     private val fm = supportFragmentManager
 
     fun replace(containerId: Int, fragment: BaseFragment) {
-        val ft = fm.beginTransaction()
-        ft.replace(containerId, fragment)
-        ft.addToBackStack(null)
-        ft.commit()
+        with(fm.beginTransaction()) {
+            replace(containerId, fragment)
+            addToBackStack(null)
+            commit()
+        }
     }
 
     fun setTitle(title: String) {

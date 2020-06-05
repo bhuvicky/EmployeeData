@@ -22,5 +22,3 @@ object MyDatabase
 * 
 * */
 
-val SharedPreferences.myName : String
-get() = "sdfjsdjf"
