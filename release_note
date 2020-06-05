@@ -1,3 +1,4 @@
-##### 1.0 ->
+##### 1.1 ->
 db update operation not impl
 from empDetailsFrag, click back, list is empty
+without nav comp; only app feature written in this branch.
