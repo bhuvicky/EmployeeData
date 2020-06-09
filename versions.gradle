@@ -10,6 +10,7 @@ versions.multidex = '2.0.1'
 // JetPack
 versions.room = '2.2.5'
 versions.lifecycle = '2.1.0'
+versions.navigation = '2.3.0-beta01'
 
 
 // Dagger
@@ -49,6 +50,12 @@ lifecycle.extension = "androidx.lifecycle:lifecycle-extensions:$versions.lifecyc
 lifecycle.compiler = "androidx.lifecycle:lifecycle-common-java8:$versions.lifecycle"
 lifecycle.reactive_streams = "androidx.lifecycle:lifecycle-reactivestreams:$versions.lifecycle"
 deps.lifecycle = lifecycle
+
+def navigation = [:]
+navigation.fragment = "androidx.navigation:navigation-fragment-ktx:$versions.navigation"
+navigation.ui = "androidx.navigation:navigation-ui-ktx:$versions.navigation"
+navigation.safeargs = "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
+deps.navigation = navigation
 
 def reactive = [:]
 reactive.rxjava = "io.reactivex.rxjava2:rxkotlin:$versions.rxjava"
