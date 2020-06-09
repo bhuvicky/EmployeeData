@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -22,6 +23,7 @@ class EmployeeListFragment :BaseFragment() {
     val viewModel: EmployeeViewModel by lazy { ViewModelProviders.of(this).get(EmployeeViewModel::class.java) }
 
     private lateinit var employeeAdapter: EmployeeListAdapter
+    private var mEmployeeList: List<EmployeeRecord> = mutableListOf()
 
     companion object {
         fun newInstance() = EmployeeListFragment().apply {
@@ -31,6 +33,9 @@ class EmployeeListFragment :BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        employeeAdapter = EmployeeListAdapter(requireContext()) { resId, item ->
+            handleRecyclerViewItemClick(resId, item)
+        }
         setObservers()
 
     }
@@ -49,7 +54,9 @@ class EmployeeListFragment :BaseFragment() {
         setTitle("EmployeeData")
         with(recyclerViewStudentList) {
             layoutManager = LinearLayoutManager(context)
+            adapter = employeeAdapter
         }
+        employeeAdapter.setData(mEmployeeList)
 
         fab.setOnClickListener {
             replace(R.id.fragment_container, EmployeeDetailsFragment.newInstance())
@@ -59,6 +66,7 @@ class EmployeeListFragment :BaseFragment() {
     private fun setObservers() {
         viewModel.getAllRecords().observe(this, Observer {
             println("log get all rows count = ${it.size}")
+            mEmployeeList = it
             setEmployeeList(it)
         })
     }
@@ -67,13 +75,33 @@ class EmployeeListFragment :BaseFragment() {
         if (employeeList.isEmpty())
             // show error
         else {
-            recyclerViewStudentList.adapter = EmployeeListAdapter(context!!, employeeList as MutableList<EmployeeRecord>) { resId, item ->
-                if (resId == R.id.imageviewEdit)
-                    replace(R.id.fragment_container, EmployeeDetailsFragment.newInstance(item))
-
-                if (resId == R.id.imageviewDelete)
-                    println("log click del listener")
-            }
+            employeeAdapter.setData(employeeList)
         }
+    }
+
+    private fun handleRecyclerViewItemClick(resId: Int, item: EmployeeRecord) {
+        if (resId == R.id.imageviewEdit) {
+             replace(R.id.fragment_container, EmployeeDetailsFragment.newInstance(item))
+        }
+
+        if (resId == R.id.imageviewDelete)
+            showAlertDialog(item)
+    }
+
+    private fun showAlertDialog(item: EmployeeRecord) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Delete Item")
+        builder.setMessage("Are you sure, you want to delete this item?")
+
+        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+            viewModel.delete(item)
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+            dialog.dismiss()
+        }
+
+        builder.show()
     }
 }
