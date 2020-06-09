@@ -22,6 +22,7 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
 
     var insertOperationLiveData: MutableLiveData<Long> = MutableLiveData()
     var updateOperationLiveData: MutableLiveData<Int> = MutableLiveData()
+    var deleteOperationLiveData: MutableLiveData<EmployeeRecord> = MutableLiveData()
 
     private val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
@@ -69,7 +70,13 @@ class EmployeeViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun delete(employee: EmployeeRecord) {
-        repository.delete(employee)
+        val disposable = Single.fromCallable { repository.delete(employee) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                deleteOperationLiveData.value = employee
+            }, {})
+        compositeDisposable.add(disposable)
     }
 
     override fun onCleared() {

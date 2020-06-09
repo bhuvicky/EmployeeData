@@ -1,8 +1,12 @@
 package com.example.employeedata.database
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
+// TODO: New Learn; kotlin way to impl Parcelable...
+@Parcelize
 @Entity(tableName = "students_table")
 data class EmployeeRecord(
     // to make primary key as auto-increment.
@@ -14,4 +18,4 @@ data class EmployeeRecord(
     val dob: Long,
     val gender: Int,
     val mobileNo: String
-)
+) : Parcelable

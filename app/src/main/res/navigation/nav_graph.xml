@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/employeeListFragment">
 
+
+    <fragment
+        android:id="@+id/employeeListFragment"
+        android:name="com.example.employeedata.ui.EmployeeListFragment"
+        android:label="EmployeeListFragment" >
+        <action
+            android:id="@+id/action_employeeListFragment_to_employeeDetailsFragment"
+            app:destination="@id/employeeDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/employeeDetailsFragment"
+        android:name="com.example.employeedata.ui.EmployeeDetailsFragment"
+        android:label="EmployeeDetailsFragment" >
+        <argument
+            android:name="empRec"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="com.example.employeedata.database.EmployeeRecord" />
+    </fragment>
 </navigation>

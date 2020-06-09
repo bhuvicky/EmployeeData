@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import com.example.employeedata.AppUtil
 import com.example.employeedata.EmployeeApp
 import com.example.employeedata.R
@@ -59,11 +60,12 @@ class EmployeeDetailsFragment : BaseFragment() {
         // TODO Doubt: for generic method "getViewModel", we are not mentioned the Type parameter.. how it is working ??
         mViewModel = getViewModel { EmployeeViewModel(EmployeeApp.getAppContext()) }
 
+        mEmployeeRecord = EmployeeDetailsFragmentArgs.fromBundle(requireArguments()).empRec
         // if we use kotlin-android-extensions for "findviewbyid"
         // we can't access UI element id in "onCreateView" method.
         setListeners()
         setObservers()
-        pref = AppPreferences.getInstance(context!!)
+        pref = AppPreferences.getInstance(requireContext())
 
         mEmployeeRecord?.let {
             setTitle("Update Employee")
@@ -105,11 +107,11 @@ class EmployeeDetailsFragment : BaseFragment() {
         }
 
 //        compositeDisposable.addAll(nameObservable, ageObservable, dobObservable, genderObservable, formDisposable)
-        mViewModel.insertOperationLiveData.observe(this, androidx.lifecycle.Observer {
+        mViewModel.insertOperationLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             println("log inserted row id = $it")
         })
 
-        mViewModel.updateOperationLiveData.observe(this, androidx.lifecycle.Observer {
+        mViewModel.updateOperationLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             println("log updated rows count = $it")
         })
 
@@ -139,7 +141,7 @@ class EmployeeDetailsFragment : BaseFragment() {
         // if we don't add above line, after two touch only date-picker dialog will come..
         editTextDob.setOnClickListener {
             val dialog = DatePickerDialog(
-                context!!, dateSetListener,
+                requireContext(), dateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
                 cal.get(Calendar.YEAR),
                 cal.get(Calendar.MONTH),

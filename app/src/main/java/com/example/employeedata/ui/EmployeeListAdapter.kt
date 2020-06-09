@@ -11,13 +11,13 @@ import com.example.employeedata.database.EmployeeRecord
 import kotlinx.android.synthetic.main.item_employee.view.*
 
 class EmployeeListAdapter(private val context: Context,
-                          private val employeeList: MutableList<EmployeeRecord> = mutableListOf(),
+                          private var employeeList: MutableList<EmployeeRecord> = mutableListOf(),
                           private val clickListener: (Int, EmployeeRecord) -> Unit):
     RecyclerView.Adapter<EmployeeListAdapter.EmployeeViewHolder>() {
 
-    init {
-        if (!employeeList.isEmpty())
-            notifyDataSetChanged()
+    fun setData(list: List<EmployeeRecord>) {
+        employeeList = list as MutableList<EmployeeRecord>
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): EmployeeViewHolder {
