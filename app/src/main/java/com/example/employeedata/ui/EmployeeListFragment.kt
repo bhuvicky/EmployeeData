@@ -1,30 +1,28 @@
 package com.example.employeedata.ui
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.employeedata.R
 import com.example.employeedata.base.BaseFragment
 import com.example.employeedata.data.EmployeeViewModel
 import com.example.employeedata.database.EmployeeRecord
-import io.reactivex.Observable
-import io.reactivex.rxkotlin.Observables
+import com.example.employeedata.extensions.show
 import kotlinx.android.synthetic.main.fragment_employee_list.*
 
-class EmployeeListFragment :BaseFragment() {
+class EmployeeListFragment : BaseFragment() {
 
     private lateinit var employeeViewModel: EmployeeViewModel
-    val viewModel: EmployeeViewModel by lazy { ViewModelProviders.of(this).get(EmployeeViewModel::class.java) }
+    val viewModel: EmployeeViewModel by lazy {
+        ViewModelProviders.of(this).get(EmployeeViewModel::class.java)
+    }
 
     private lateinit var employeeAdapter: EmployeeListAdapter
     private var mEmployeeList: List<EmployeeRecord> = mutableListOf()
@@ -42,7 +40,11 @@ class EmployeeListFragment :BaseFragment() {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_employee_list, container, false)
         return view
     }
@@ -50,6 +52,7 @@ class EmployeeListFragment :BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+//        errorView.show()
     }
 
     private fun initViews() {
@@ -61,8 +64,9 @@ class EmployeeListFragment :BaseFragment() {
         employeeAdapter.setData(mEmployeeList)
 
         fab.setOnClickListener {
-//            replace(R.id.fragment_container, EmployeeDetailsFragment.newInstance())
-            val action = EmployeeListFragmentDirections.actionEmployeeListFragmentToEmployeeDetailsFragment()
+            //            replace(R.id.fragment_container, EmployeeDetailsFragment.newInstance())
+            val action =
+                EmployeeListFragmentDirections.actionEmployeeListFragmentToEmployeeDetailsFragment()
             navController.navigate(action)
         }
     }
@@ -77,12 +81,14 @@ class EmployeeListFragment :BaseFragment() {
         viewModel.deleteOperationLiveData.observe(this, Observer {
             employeeAdapter.notifyItemRemoved((mEmployeeList as ArrayList).indexOf(it))
             (mEmployeeList as ArrayList).remove(it)
+            if (mEmployeeList.isEmpty())
+                showEmptyView()
         })
     }
 
     private fun setEmployeeList(employeeList: List<EmployeeRecord>) {
         if (employeeList.isEmpty())
-            // show error
+            showEmptyView()
         else {
             employeeAdapter.setData(employeeList)
         }
@@ -91,7 +97,10 @@ class EmployeeListFragment :BaseFragment() {
     private fun handleRecyclerViewItemClick(resId: Int, item: EmployeeRecord) {
         if (resId == R.id.imageviewEdit) {
             // replace(R.id.fragment_container, EmployeeDetailsFragment.newInstance(item))
-            val action = EmployeeListFragmentDirections.actionEmployeeListFragmentToEmployeeDetailsFragment(item)
+            val action =
+                EmployeeListFragmentDirections.actionEmployeeListFragmentToEmployeeDetailsFragment(
+                    item
+                )
             navController.navigate(action)
         }
 
@@ -114,5 +123,12 @@ class EmployeeListFragment :BaseFragment() {
         }
 
         builder.show()
+    }
+
+    private fun showEmptyView() {
+        with(errorView) {
+            showOnlyTitle()
+            title = "No Record Found!!"
+        }
     }
 }

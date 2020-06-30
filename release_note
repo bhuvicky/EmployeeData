@@ -1,4 +1,6 @@
-##### 1.1 ->
-db update operation not impl
-from empDetailsFrag, click back, list is empty
-without nav comp; only app feature written in this branch.
+##### 1.2 ->
+creating error view:
+1. create XML layout with "merge" tag
+2. create class which extends LinearLayout
+3. create required constructor.
+4.

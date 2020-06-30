@@ -30,7 +30,7 @@ class EmployeeListAdapter(private val context: Context,
     }
 
     override fun getItemCount(): Int {
-        return employeeList?.size ?: 0
+        return employeeList.size
     }
 
     class EmployeeViewHolder(val containerView: View?): RecyclerView.ViewHolder(containerView!!) {

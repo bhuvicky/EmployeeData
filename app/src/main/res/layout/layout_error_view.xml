@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/errorViewImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/error_view_cloud"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/errorviewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Oops"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/errorviewSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Something went wrong"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/errorviewRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Try Again"
+        android:textAllCaps="false"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"/>
+</merge>

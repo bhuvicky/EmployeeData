@@ -15,6 +15,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <com.example.employeedata.widget.ErrorView
+        android:id="@+id/errorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:ev_titleColor="@color/colorPrimary"
+        app:ev_subtitleColor="@color/brown_600"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

@@ -21,6 +21,9 @@ android {
 
     viewBinding.enabled = true
 
+    // Once the new project is created, by default it consists of two build types/variants – debug, release
+    // A release is the build type that requires you to sign the APK.
+    //  In the release build type, we obfuscate the code using ProGuard to prevent reverse engineering
     buildTypes {
         release {
             minifyEnabled false
