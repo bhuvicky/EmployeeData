@@ -1,4 +1,4 @@
-package com.example.employeedata.database
+package com.bhuvanesh.employeedata.database
 
 import android.os.Parcelable
 import androidx.room.Entity

@@ -1,4 +1,4 @@
-package com.example.employeedata.ui
+package com.bhuvanesh.employeedata.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,11 +10,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.employeedata.R
-import com.example.employeedata.base.BaseFragment
-import com.example.employeedata.data.EmployeeViewModel
-import com.example.employeedata.database.EmployeeRecord
-import com.example.employeedata.extensions.show
+import com.bhuvanesh.employeedata.R
+import com.bhuvanesh.employeedata.base.BaseFragment
+import com.bhuvanesh.employeedata.data.EmployeeViewModel
+import com.bhuvanesh.employeedata.database.EmployeeRecord
 import kotlinx.android.synthetic.main.fragment_employee_list.*
 
 class EmployeeListFragment : BaseFragment() {

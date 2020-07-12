@@ -1,8 +1,8 @@
-package com.example.employeedata
+package com.bhuvanesh.employeedata
 
 import android.os.Bundle
 import androidx.navigation.findNavController
-import com.example.employeedata.base.BaseActivity
+import com.bhuvanesh.employeedata.base.BaseActivity
 
 
 class MainActivity : BaseActivity() {

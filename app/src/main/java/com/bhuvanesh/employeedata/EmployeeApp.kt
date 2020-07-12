@@ -1,7 +1,7 @@
-package com.example.employeedata
+package com.bhuvanesh.employeedata
 
 import android.app.Application
-import com.example.employeedata.data.AppPreferences
+import com.bhuvanesh.employeedata.data.AppPreferences
 
 class EmployeeApp: Application() {
 

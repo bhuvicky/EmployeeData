@@ -1,4 +1,4 @@
-package com.example.employeedata.widget
+package com.bhuvanesh.employeedata.widget
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -14,8 +14,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
-import com.example.employeedata.R
-import com.example.employeedata.extensions.show
+import com.bhuvanesh.employeedata.R
+import com.bhuvanesh.employeedata.extensions.show
 
 class ErrorView: LinearLayout {
 

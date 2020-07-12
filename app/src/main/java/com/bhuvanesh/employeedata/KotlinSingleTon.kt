@@ -1,6 +1,4 @@
-package com.example.employeedata
-
-import android.content.SharedPreferences
+package com.bhuvanesh.employeedata
 
 object MyDatabase
 

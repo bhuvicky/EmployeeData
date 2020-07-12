@@ -1,4 +1,4 @@
-package com.example.employeedata.extensions
+package com.bhuvanesh.employeedata.extensions
 
 import android.content.Context
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.example.employeedata.data.AppViewModelFactory
+import com.bhuvanesh.employeedata.data.AppViewModelFactory
 import io.reactivex.*
 
 

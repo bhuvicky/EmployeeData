@@ -1,11 +1,7 @@
-package com.example.employeedata.data
+package com.bhuvanesh.employeedata.data
 
-import com.example.employeedata.database.EmployeeDao
-import com.example.employeedata.database.EmployeeRecord
-import io.reactivex.Scheduler
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.bhuvanesh.employeedata.database.EmployeeDao
+import com.bhuvanesh.employeedata.database.EmployeeRecord
 
 
 class EmployeeRepository(private val employeeDao: EmployeeDao) {

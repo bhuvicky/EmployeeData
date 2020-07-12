@@ -21,12 +21,33 @@ android {
 
     viewBinding.enabled = true
 
+    /*File signFile = project.file('keystore.properties')
+    if (signFile.exists()) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(signFile))
+
+        signingConfigs {
+            release {
+                storeFile file(project.file(properties['storeFile']))
+                storePassword properties['storePassword']
+                keyAlias properties['keyAlias']
+                keyPassword properties['keyPassword']
+            }
+        }
+    }*/
+
     // Once the new project is created, by default it consists of two build types/variants – debug, release
     // A release is the build type that requires you to sign the APK.
     //  In the release build type, we obfuscate the code using ProGuard to prevent reverse engineering
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+//            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

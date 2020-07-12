@@ -1,8 +1,7 @@
-package com.example.employeedata.data
+package com.bhuvanesh.employeedata.data
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.employeedata.database.EmployeeRecord
 
 object AppPreferences {
 

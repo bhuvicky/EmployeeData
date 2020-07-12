@@ -1,17 +1,13 @@
-package com.example.employeedata.data
+package com.bhuvanesh.employeedata.data
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.LiveDataReactiveStreams
 import androidx.lifecycle.MutableLiveData
-import com.example.employeedata.database.AppDatabase
-import com.example.employeedata.database.EmployeeRecord
-import io.reactivex.Observable
+import com.bhuvanesh.employeedata.database.AppDatabase
+import com.bhuvanesh.employeedata.database.EmployeeRecord
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 
 class EmployeeViewModel(application: Application) : AndroidViewModel(application) {

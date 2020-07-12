@@ -1,4 +1,4 @@
-package com.example.employeedata.ui
+package com.bhuvanesh.employeedata.ui
 
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
@@ -8,26 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.navArgs
-import com.example.employeedata.AppUtil
-import com.example.employeedata.EmployeeApp
-import com.example.employeedata.R
-import com.example.employeedata.base.BaseFragment
-import com.example.employeedata.data.AppPreferences
-import com.example.employeedata.data.EmployeeViewModel
-import com.example.employeedata.database.EmployeeRecord
-import com.example.employeedata.extensions.getViewModel
+import com.bhuvanesh.employeedata.AppUtil
+import com.bhuvanesh.employeedata.EmployeeApp
+import com.bhuvanesh.employeedata.R
+import com.bhuvanesh.employeedata.base.BaseFragment
+import com.bhuvanesh.employeedata.data.AppPreferences
+import com.bhuvanesh.employeedata.data.EmployeeViewModel
+import com.bhuvanesh.employeedata.database.EmployeeRecord
+import com.bhuvanesh.employeedata.extensions.getViewModel
 import com.jakewharton.rxbinding3.widget.itemSelections
 import com.jakewharton.rxbinding3.widget.textChanges
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.Flowables
 import io.reactivex.rxkotlin.Observables
 import kotlinx.android.synthetic.main.fragment_employee_details.*
-import kotlinx.android.synthetic.main.item_employee.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -109,10 +103,12 @@ class EmployeeDetailsFragment : BaseFragment() {
 //        compositeDisposable.addAll(nameObservable, ageObservable, dobObservable, genderObservable, formDisposable)
         mViewModel.insertOperationLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             println("log inserted row id = $it")
+            activity?.onBackPressed()
         })
 
         mViewModel.updateOperationLiveData.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             println("log updated rows count = $it")
+            activity?.onBackPressed()
         })
 
         compositeDisposable.add(formDisposable)

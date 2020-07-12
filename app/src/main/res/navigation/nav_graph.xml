@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/employeeListFragment"
-        android:name="com.example.employeedata.ui.EmployeeListFragment"
+        android:name="com.bhuvanesh.employeedata.ui.EmployeeListFragment"
         android:label="EmployeeListFragment" >
         <action
             android:id="@+id/action_employeeListFragment_to_employeeDetailsFragment"
@@ -14,12 +14,12 @@
     </fragment>
     <fragment
         android:id="@+id/employeeDetailsFragment"
-        android:name="com.example.employeedata.ui.EmployeeDetailsFragment"
+        android:name="com.bhuvanesh.employeedata.ui.EmployeeDetailsFragment"
         android:label="EmployeeDetailsFragment" >
         <argument
             android:name="empRec"
             android:defaultValue="@null"
             app:nullable="true"
-            app:argType="com.example.employeedata.database.EmployeeRecord" />
+            app:argType="com.bhuvanesh.employeedata.database.EmployeeRecord" />
     </fragment>
 </navigation>

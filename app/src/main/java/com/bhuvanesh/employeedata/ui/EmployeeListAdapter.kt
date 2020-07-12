@@ -1,13 +1,13 @@
-package com.example.employeedata.ui
+package com.bhuvanesh.employeedata.ui
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.employeedata.AppUtil
-import com.example.employeedata.R
-import com.example.employeedata.database.EmployeeRecord
+import com.bhuvanesh.employeedata.AppUtil
+import com.bhuvanesh.employeedata.R
+import com.bhuvanesh.employeedata.database.EmployeeRecord
 import kotlinx.android.synthetic.main.item_employee.view.*
 
 class EmployeeListAdapter(private val context: Context,
